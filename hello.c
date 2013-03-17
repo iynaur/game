@@ -51,6 +51,9 @@ int main() {
     if (event.type == KeyPress) {
       KeySym key;
       XLookupString(&event, text, 255, &key, None);
+      //XFillRectangle(display, window, DefaultGC(display, col_back), pad_where_x,
+      //    20, 10, 10);
+      XClearWindow(display, window);
       if (key == XK_Up) {
         if (pad_where_x > 0) {
           pad_where_x -= 1;
@@ -62,6 +65,7 @@ int main() {
       }
       XFillRectangle(display, window, DefaultGC(display, s), pad_where_x, 20,
           10, 10);
+      XFlush(display);
       if (key == XK_q) {
         break;
       }
