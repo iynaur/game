@@ -58,8 +58,6 @@ int main() {
     if (event.type == KeyPress) {
       KeySym key;
       XLookupString(&event, text, 255, &key, None);
-      //XFillRectangle(display, window, DefaultGC(display, col_back), pad_where_x,
-      //    20, 10, 10);
       XClearWindow(display, window);
       if (key == XK_Left) {
         if (pad_where_x > 0) {
