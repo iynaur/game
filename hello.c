@@ -15,6 +15,12 @@ int main() {
   char text[255];
   int s;
 
+  int pad_length = 50;
+  int pad_width = 10;
+
+  int window_length = 800;
+  int window_width = 600;
+
   int pad_where_x = 40;
 
   /* open connection with the server */
@@ -27,8 +33,9 @@ int main() {
   s = DefaultScreen(display);
 
   /* create window */
-  window = XCreateSimpleWindow(display, RootWindow(display, s), 0, 0, 800,
-      600, 1, BlackPixel(display, s), WhitePixel(display, s));
+  window = XCreateSimpleWindow(display, RootWindow(display, s), 0, 0,
+      window_length, window_width, 1, BlackPixel(display, s),
+      WhitePixel(display, s));
 
   /* select kind of events we are interested in */
   XSelectInput(display, window, ExposureMask | KeyPressMask);
@@ -43,7 +50,7 @@ int main() {
     /* draw or redraw the window */
     if (event.type == Expose) {
       XFillRectangle(display, window, DefaultGC(display, s), pad_where_x, 20,
-          10, 10);
+          pad_length, pad_width);
       XDrawString(display, window, DefaultGC(display, s), 50, 50, msg,
           strlen(msg));
     }
@@ -54,17 +61,17 @@ int main() {
       //XFillRectangle(display, window, DefaultGC(display, col_back), pad_where_x,
       //    20, 10, 10);
       XClearWindow(display, window);
-      if (key == XK_Up) {
+      if (key == XK_Left) {
         if (pad_where_x > 0) {
-          pad_where_x -= 1;
+          pad_where_x -= 5;
         }
-      } else if (key == XK_Down) {
-        if (pad_where_x < 600) {
-          pad_where_x += 1;
+      } else if (key == XK_Right) {
+        if (pad_where_x < window_length - pad_length) {
+          pad_where_x += 5;
         }
       }
       XFillRectangle(display, window, DefaultGC(display, s), pad_where_x, 20,
-          10, 10);
+          pad_length, pad_width);
       XFlush(display);
       if (key == XK_q) {
         break;
