@@ -45,44 +45,26 @@ int exit_threads = 0;
 void* timeout_cb() {
     int Ax = circle_x + circle_r/2;
     int Ay = circle_y;
-    //int Bx = circle_x + circle_r;
-    //int By = circle_y + circle_r/2;
+    int Bx = circle_x + circle_r;
+    int By = circle_y + circle_r/2;
     int Cx = circle_x + circle_r/2;
     int Cy = circle_y + circle_r;
-    //int Dx = circle_x;
-    //int Dy = circle_y + circle_r/2;
-/*    if (Ay <= pad_where_y) {
-      circle_x = 100;
-      circle_y = 100;
-      v_x = 0;
-      v_y = 0;
-    }
-    if (Cx >= pad_where_x) {
-      circle_x = 200;
-      circle_y = 200;
-      v_x = 0;
-      v_y = 0;
-    }
-    if (Cx <= pad_where_x + pad_length) {
-      circle_x = 100;
-      circle_y = 100;
-      v_x = 0;
-      v_y = 0;
-    }*/
-//    if (Cy >= pad_where_y &&
-//        Ay <= pad_where_y) { // &&
-//        Cx >= pad_where_x &&
-//        Cx <= pad_where_x + pad_length) {
-//      v_y = -v_y;
-//    } else if (Cy >= pad_where_y) {
+    int Dx = circle_x;
+    int Dy = circle_y + circle_r/2;
     if (Cy >= pad_where_y && Ay <= pad_where_y) {
       if (Cx >= pad_where_x && Cx <= pad_where_x + pad_length) {
         v_y = -v_y;
-      } else {
-        v_x = 0;
-        v_y = 0;
       }
     }
+    if (By <= pad_where_y + pad_width && By >= pad_where_y) {
+      if (Dx >= pad_where_x && Bx <= pad_where_x) {
+        v_x = -v_x;
+      }
+      if (Dx <= pad_where_x + pad_length && Bx >= pad_where_x + pad_length) {
+        v_x = -v_x;
+      }
+    }
+
     if (v_x > 0) {
       if (circle_x + circle_r < window_length) {
         circle_x += v_x;
