@@ -15,7 +15,7 @@ const int angle2 = 360 * 64;
 int window_length = 800;
 int window_width = 600;
 
-int pad_where_y = 560;
+int pad_where_y = 300;//460;//560;
 
 Display *display;
 Window window;
@@ -24,8 +24,8 @@ char *msg = "Hello, World!";
 char text[255];
 int s;
 
-int pad_length = 50;
-int pad_width = 10;
+int pad_length = 150;
+int pad_width = 100;//10;
 
 int circle_x = 100;
 int circle_y = 100;
@@ -51,17 +51,24 @@ void* timeout_cb() {
     int Cy = circle_y + circle_r;
     int Dx = circle_x;
     int Dy = circle_y + circle_r/2;
-    if (Cy >= pad_where_y && Ay <= pad_where_y) {
-      if (Cx >= pad_where_x && Cx <= pad_where_x + pad_length) {
+    if (Cx >= pad_where_x && Cx <= pad_where_x + pad_length) {
+      if (Cy >= pad_where_y && Ay <= pad_where_y) {
         v_y = -v_y;
+        msg = "1 !!!!";
+      }
+      if (Cy >= pad_where_y + pad_width && Ay <= pad_where_y + pad_width) {
+        v_y = -v_y;
+        msg = "4 !!!!";
       }
     }
     if (By <= pad_where_y + pad_width && By >= pad_where_y) {
-      if (Dx >= pad_where_x && Bx <= pad_where_x) {
+      if (Dx <= pad_where_x && Bx >= pad_where_x) {
         v_x = -v_x;
+        msg = "2 !!!!";
       }
       if (Dx <= pad_where_x + pad_length && Bx >= pad_where_x + pad_length) {
         v_x = -v_x;
+        msg = "3 !!!!";
       }
     }
 
@@ -104,7 +111,7 @@ void* timeout_cb() {
       circle_r, circle_r, angle1, angle2);
   pthread_mutex_unlock(&mutex_draw);
   //msg = "Hello, Ania!";
-  //XDrawString(display, window, DefaultGC(display, s), 50, 50, msg, strlen(msg));
+  XDrawString(display, window, DefaultGC(display, s), 50, 50, msg, strlen(msg));
   XFlush(display);
 }
 
