@@ -132,6 +132,7 @@ static void* g_start_timer(void *args) {
 }
 
 int main() {
+    XInitThreads();
   //Display *display;
   //Window window;
   XEvent event;
@@ -173,11 +174,11 @@ int main() {
       //XClearWindow(display, window);
       if (key == XK_Left) {
         if (pad_where_x > 0) {
-          pad_where_x -= 5;
+          pad_where_x -= 10;
         }
       } else if (key == XK_Right) {
         if (pad_where_x < window_length - pad_length) {
-          pad_where_x += 5;
+          pad_where_x += 10;
         }
       }
       if (key == XK_q) {
