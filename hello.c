@@ -43,6 +43,8 @@ pthread_mutex_t mutex_exit;
 int exit_threads = 0;
 
 void* timeout_cb() {
+    pthread_mutex_lock(&mutex_draw);
+
     int Ax = circle_x + circle_r/2;
     int Ay = circle_y;
     int Bx = circle_x + circle_r;
@@ -103,10 +105,14 @@ void* timeout_cb() {
       }
     }
 
-  pthread_mutex_lock(&mutex_draw);
   XClearWindow(display, window);
+  XSetForeground(display, DefaultGC(display, s), BlackPixel(display, s));
   XFillRectangle(display, window, DefaultGC(display, s), pad_where_x,
       pad_where_y, pad_length, pad_width);
+
+  XSetForeground(display, DefaultGC(display, s), 0xFF0000);
+  //0xFF  blue, ff00 green
+
   XFillArc(display, window, DefaultGC(display, s), circle_x, circle_y,
       circle_r, circle_r, angle1, angle2);
   pthread_mutex_unlock(&mutex_draw);
@@ -172,6 +178,7 @@ int main() {
       KeySym key;
       XLookupString(&event, text, 255, &key, None);
       //XClearWindow(display, window);
+      pthread_mutex_lock(&mutex_draw);
       if (key == XK_Left) {
         if (pad_where_x > 0) {
           pad_where_x -= 10;
@@ -181,22 +188,12 @@ int main() {
           pad_where_x += 10;
         }
       }
+      pthread_mutex_unlock(&mutex_draw);
+
       if (key == XK_q) {
         break;
       }
     }
-    pthread_mutex_lock(&mutex_draw);
-    XClearWindow(display, window);
-    XFillRectangle(display, window, DefaultGC(display, s), pad_where_x,
-        pad_where_y, pad_length, pad_width);
-    XFillArc(display, window, DefaultGC(display, s), circle_x, circle_y,
-        circle_r, circle_r, angle1, angle2);
-    //XDrawString(display, window, DefaultGC(display, s), 50, 50, msg,
-    //    strlen(msg));
-    XFlush(display);
-    pthread_mutex_unlock(&mutex_draw);
-    
-
   }
 
   /* close connection to server */
